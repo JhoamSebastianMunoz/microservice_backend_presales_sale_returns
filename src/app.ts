@@ -4,10 +4,10 @@ import YAML from 'yamljs';
 import swaggerUi from 'swagger-ui-express';
 import dotenv from "dotenv";
 
-import presaleRoutes from './src/routes/presaleRoutes';
-import salesRoutes from './src/routes/salesRoutes';
-import refundRoutes from './src/routes/refundRoutes';
-import invoiceDownload from './src/routes/invoiceDownloadRoutes';
+import presaleRoutes from './routes/presaleRoutes';
+import salesRoutes from './routes/salesRoutes';
+import refundRoutes from './routes/refundRoutes';
+import invoiceDownload from './routes/invoiceDownloadRoutes';
 
 
 dotenv.config();
