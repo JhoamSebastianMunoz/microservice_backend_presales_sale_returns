@@ -24,6 +24,11 @@ app.use('/', salesRoutes);
 app.use('/', refundRoutes);
 app.use('/', invoiceDownload);
 
+//verificar si funciona el despliegue
+app.get("/", (req, res) => {
+  res.send("Backend en funcionamiento");
+});
+
 const PORT = process.env.PORT || 10000;
 
 app.listen(PORT, () => {
