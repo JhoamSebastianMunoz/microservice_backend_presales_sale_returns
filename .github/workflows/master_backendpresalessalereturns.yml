@@ -37,6 +37,8 @@ jobs:
             dist
             package.json
             package-lock.json
+            tsconfig.json
+            .env.example
 
   deploy:
     runs-on: ubuntu-latest
