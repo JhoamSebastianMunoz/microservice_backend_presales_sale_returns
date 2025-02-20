@@ -14,6 +14,11 @@ dotenv.config();
 
 const app = express().use(bodyParser.json());
 
+//verificar si funciona el despliegue
+app.get("/", (req, res) => {
+  res.send("Backend en funcionamiento");
+});
+
 const swaggerDocument = YAML.load("./swagger.yaml");
 
 // Montar la documentación Swagger en la ruta `/api-docs`
@@ -23,11 +28,6 @@ app.use('/', presaleRoutes);
 app.use('/', salesRoutes);
 app.use('/', refundRoutes);
 app.use('/', invoiceDownload);
-
-//verificar si funciona el despliegue
-app.get("/", (req, res) => {
-  res.send("Backend en funcionamiento");
-});
 
 const PORT = process.env.PORT || 10000;
 
