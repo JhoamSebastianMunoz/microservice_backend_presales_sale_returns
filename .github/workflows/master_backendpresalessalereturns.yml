@@ -38,6 +38,7 @@ jobs:
             package.json
             package-lock.json
             swagger.yaml
+            web.config
 
   deploy:
     runs-on: ubuntu-latest
