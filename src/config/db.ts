@@ -17,6 +17,15 @@ const db = mysql.createPool({
   queueLimit: 0,
   ssl: sslConfig
 });
+db.getConnection((err, connection) => {
+  if (err) {
+      console.error("Error en la conexión con la BD:", err);
+      return;
+  }
+  console.log("Conexión a la BD establecida correctamente");
+  connection.release();
+});
+
 
   
 export default db.promise()
