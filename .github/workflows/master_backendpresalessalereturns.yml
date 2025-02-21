@@ -39,6 +39,7 @@ jobs:
             package.json
             package-lock.json
             web.config
+            iisnode.yml
             .env
             swagger.yaml
 
