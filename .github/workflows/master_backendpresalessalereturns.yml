@@ -39,6 +39,8 @@ jobs:
             package-lock.json
             swagger.yaml
             web.config
+            iisnode.yml
+            startup.txt
 
   deploy:
     runs-on: ubuntu-latest
