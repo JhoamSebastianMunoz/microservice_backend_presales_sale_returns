@@ -34,14 +34,13 @@ jobs:
         with:
           name: node-app
           path: |
-            dist
+            dist/**
+            node_modules/**
             package.json
             package-lock.json
-            swagger.yaml
             web.config
-            iisnode.yml
-            startup.txt
             .env
+            swagger.yaml
 
   deploy:
     runs-on: ubuntu-latest
