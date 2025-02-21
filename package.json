@@ -5,9 +5,8 @@
   "scripts": {
     "build": "tsc",
     "prestart": "npm run build",
-    "start": "node ./dist/app.js",
-    "postinstall": "npm run build",
-    "azure-start": "node ./dist/app.js"
+    "start": "node dist/app.js",
+    "postinstall": "npm run build"
   },
   "author": "",
   "license": "ISC",
