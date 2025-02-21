@@ -7,7 +7,7 @@
     "prestart": "npm run build",
     "start": "node ./dist/app.js",
     "postinstall": "npm run build",
-    "test": ""
+    "azure-start": "node ./dist/app.js"
   },
   "author": "",
   "license": "ISC",
