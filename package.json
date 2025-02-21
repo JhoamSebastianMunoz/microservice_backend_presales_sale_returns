@@ -4,7 +4,9 @@
   "main": "./dist/app.js",
   "scripts": {
     "build": "tsc",
-    "start": "cross-env NODE_ENV=production node ./dist/app.js",
+    "prestart": "npm run build",
+    "start": "node ./dist/app.js",
+    "postinstall": "npm run build",
     "test": ""
   },
   "author": "",
