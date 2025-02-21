@@ -41,6 +41,7 @@ jobs:
             web.config
             iisnode.yml
             startup.txt
+            .env
 
   deploy:
     runs-on: ubuntu-latest
