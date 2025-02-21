@@ -1,7 +1,7 @@
 {
   "name": "microservice_backend_preventa_devoluciones_acumulados",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./dist/app.js",
   "scripts": {
     "build": "tsc",
     "start": "cross-env NODE_ENV=production node ./dist/app.js",
