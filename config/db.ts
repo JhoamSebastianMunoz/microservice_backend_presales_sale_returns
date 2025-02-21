@@ -1,25 +1,13 @@
 import mysql from 'mysql2';
 import dotenv from "dotenv";
-
 dotenv.config();
 
+
 const sslConfig = process.env.DB_SSL === 'true'
-  ? {
-      ssl: {
-        rejectUnauthorized: false
-      }
-    }
+  ? { rejectUnauthorized: false } // o true si cuentas con el certificado adecuado
   : undefined;
 
-// Definimos el tipo de configuración
-type PoolConfig = mysql.PoolOptions & {
-  ssl?: {
-    rejectUnauthorized: boolean;
-  };
-};
-
-// Creamos la configuración con el tipo correcto
-const poolConfig: PoolConfig = {
+const db = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
@@ -27,23 +15,8 @@ const poolConfig: PoolConfig = {
   port: Number(process.env.DB_PORT) || 3306,
   connectionLimit: 10,
   queueLimit: 0,
-  ssl: sslConfig?.ssl,
-  waitForConnections: true,
-  enableKeepAlive: true,
-  keepAliveInitialDelay: 0
-};
-
-// Creamos el pool con la configuración tipada
-const db = mysql.createPool(poolConfig);
-
-// Test connection
-db.getConnection((err, connection) => {
-  if (err) {
-    console.error("Error connecting to database:", err);
-    return;
-  }
-  console.log("Successfully connected to database");
-  connection.release();
+  ssl: sslConfig
 });
 
-export default db.promise();
+  
+export default db.promise()
