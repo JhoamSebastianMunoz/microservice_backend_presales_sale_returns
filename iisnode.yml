@@ -1,0 +1,4 @@
+nodeProcessCommandLine: "node --max-old-space-size=4096 dist/app.js"
+loggingEnabled: true
+logDirectory: iisnode
+debuggingEnabled: true
