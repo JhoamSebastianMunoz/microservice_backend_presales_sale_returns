@@ -19,6 +19,15 @@ const swaggerDocument = YAML.load("./swagger.yaml");
 app.get('/', (req, res)=>{
   res.send('Servidor funcionando correctamente')
 })
+
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    time: new Date().toISOString(),
+    environment: process.env.NODE_ENV,
+    nodeVersion: process.version
+  });
+});
 // Montar la documentación Swagger en la ruta `/api-docs`
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
