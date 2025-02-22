@@ -6,6 +6,10 @@ on:
       - master
   workflow_dispatch:
 
+permissions:
+  id-token: write   # Agregar esta línea a nivel global
+  contents: read    # Agregar esta línea a nivel global
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -54,6 +58,7 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_853882F080F54A33A2AB122D4E38A5D7 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_29994BBA45A04AA3A6CE7EBC234BC94D }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_5B4877B03E4C407D97BC8C0899011331 }}
+          enable-AzPSSession: true   # Agregar esta línea
           
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
