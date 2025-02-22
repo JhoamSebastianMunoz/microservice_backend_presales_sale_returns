@@ -16,10 +16,6 @@ const app = express().use(bodyParser.json());
 
 const swaggerDocument = YAML.load("./swagger.yaml");
 
-app.get('/', (req, res)=>{
-  res.send('Servidor funcionando correctamente')
-})
-
 app.get('/health', (req, res) => {
   res.json({ 
     status: 'ok', 
@@ -28,6 +24,11 @@ app.get('/health', (req, res) => {
     nodeVersion: process.version
   });
 });
+
+app.get('/', (req, res)=>{
+  res.send('Servidor funcionando correctamente')
+})
+
 // Montar la documentación Swagger en la ruta `/api-docs`
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
