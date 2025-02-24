@@ -28,16 +28,16 @@ const getRefundDetails = async (req: Request, res: Response) => {
         }
 
         // Obtener datos del cliente
-        const client = await axios.get(`http://localhost:10102/api/client/${result.id_cliente}`);
+        const client = await axios.get(`${process.env.CLIENT_SERVICE_URL}${result.id_cliente}`);
         // console.log('CLIENTE: ', client.data);
         
         // Obtener datos del colaborador-usuario
-        const user = await axios.get(`http://localhost:10101/api/usuarios/id_usuario/${result.id_colaborador}`);
+        const user = await axios.get(`${process.env.USER_SERVICE_URL}${result.id_colaborador}`);
         console.log('USER: ', user.data.nombreCompleto);
         
         // Obtener datos de todos los productos
         const ids = result.detalle.map((d: DetailRefundDTO) => d.id_producto).join(',');
-        const products = await axios.get(`http://localhost:10104/api/products?ids=${ids}`);
+        const products = await axios.get(`${process.env.PRODUCT_SERVICE_URL}${ids}`);
         console.log('PRODUCTOS: ', products.data);
         
         // Construir la respuesta final

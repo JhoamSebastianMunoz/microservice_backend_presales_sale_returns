@@ -10,12 +10,12 @@ class SalesService{
         for (const sale of sales) {
             try {
                 // Obtener datos del colaborador (usuario)
-                const userResponse = await axios.get(`http://localhost:10101/api/usuarios/id_usuario/${sale.id_colaborador}`);;
+                const userResponse = await axios.get(`${process.env.USER_SERVICE_URL}${sale.id_colaborador}`);;
                 
                 sale.nombre_colaborador = userResponse.data;
 
                 // Obtener datos del cliente y zona
-                const clientResponse = await axios.get(`http://localhost:10102/api/client/${sale.id_cliente}`);
+                const clientResponse = await axios.get(`${process.env.CLIENT_SERVICE_URL}${sale.id_cliente}`);
                 sale.razon_social = clientResponse.data.razon_social;
                 sale.nombre_zona = clientResponse.data.zona;
             } catch (error) {
@@ -32,13 +32,13 @@ class SalesService{
         for (const sale of sales) {
             try {
                 // Obtener datos del colaborador (usuario)
-                const userResponse = await axios.get(`http://localhost:10101/api/usuarios/id_usuario/${sale.id_colaborador}`);;
+                const userResponse = await axios.get(`${process.env.CLIENT_SERVICE_URL}${sale.id_colaborador}`);;
                 console.log('USERRRRRRRRRR: ', userResponse.data);
                 
                 sale.nombre_colaborador = userResponse.data;
 
                 // Obtener datos del cliente y zona
-                const clientResponse = await axios.get(`http://localhost:10102/api/client/${sale.id_cliente}`);
+                const clientResponse = await axios.get(`${process.env.CLIENT_SERVICE_URL}${sale.id_cliente}`);
                 console.log('DATACLIENT:', clientResponse.data);
                 sale.razon_social = clientResponse.data.razon_social;
                 sale.nombre_zona = clientResponse.data.zona;
