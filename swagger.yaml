@@ -5,6 +5,7 @@ info:
   description: API para la gestión de las preventas, visualización de ventas y devoluciones 
 servers:
   - url: http://localhost:10103
+  - url: https://backendpresalessalereturns-g2cghudwf2emhnf4.eastus-01.azurewebsites.net/
     description: Servidor del microservicio preventas, ventas y devoluciones 
 components:
   securitySchemes:
