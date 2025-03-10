@@ -16,6 +16,7 @@ CREATE TABLE detalle_preventa(
 	id_detalle INT AUTO_INCREMENT PRIMARY KEY,
 	id_preventa INT NOT NULL,
 	id_producto INT NOT NULL,
+	precio_unitario DECIMAL(10, 2) NOT NULL,
 	cantidad INT NOT NULL,
 	subtotal DECIMAL(10, 2) NOT NULL DEFAULT 0,
     estado ENUM('vendido', 'devuelto') DEFAULT 'vendido',
