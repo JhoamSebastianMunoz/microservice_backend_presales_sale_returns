@@ -88,7 +88,7 @@ class PresaleService{
         return await PresaleRepository.addProductsPresale(addProductsPresale);
     }
 
-    // funcion para obtener los ids de la preventa
+    // funcion para obtener detalle de una preventa como administrador
     static async get_idsPresale(id_presale: string){
         return await PresaleRepository.getIdsPresale(id_presale);
     }

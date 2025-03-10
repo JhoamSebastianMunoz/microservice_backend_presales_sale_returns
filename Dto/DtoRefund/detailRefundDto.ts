@@ -1,17 +1,20 @@
 class DetailRefundDTO {
     private _id_preventa: string;
     private _id_producto: string;
+    private _precio_unitario: number
     private _cantidad: number;
     private _subtotal: number;
 
     constructor(
         id_preveta:string,
         id_producto:string,
+        precio_unitario:number,
         cantidad:number,
         subtotal:number
     ){
         this._id_preventa = id_preveta;
         this._id_producto = id_producto;
+        this._precio_unitario = precio_unitario;
         this._cantidad = cantidad;
         this._subtotal = subtotal;
     }
@@ -23,6 +26,10 @@ class DetailRefundDTO {
     
     get id_producto():string{
         return this._id_producto;
+    }
+
+    get precio_unitario():number{
+        return this._precio_unitario;
     }
 
     get cantidad():number{
@@ -40,6 +47,10 @@ class DetailRefundDTO {
     
     set id_producto(id_producto:string){
         this._id_producto = id_producto;
+    }
+
+    set precio_unitario(precio_unitario:number){
+        this._precio_unitario = precio_unitario;
     }
     
     set cantidad(cantidad:number){

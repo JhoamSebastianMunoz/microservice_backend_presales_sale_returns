@@ -59,7 +59,7 @@ const getSaleDetails = async (req: Request, res: Response) => {
                 
                 return {
                     nombre: producto?.nombre_producto || 'Producto no encontrado',
-                    precio: producto?.precio || 0,
+                    precio: d.precio_unitario || producto?.precio || 0,
                     cantidad: d.cantidad,
                     subtotal: d.subtotal,
                 };

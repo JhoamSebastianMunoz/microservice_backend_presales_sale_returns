@@ -57,6 +57,7 @@ static async getRefundDetails(id_presale: string){
                 p.estado,
                 p.id_cliente,
                 dp.id_producto,
+                dp.precio_unitario,
                 dp.cantidad,
                 dp.subtotal
             FROM preventas p
@@ -83,6 +84,7 @@ static async getRefundDetails(id_presale: string){
         const { id_preventa, id_cliente, id_colaborador, estado } = rows[0];
         const detalle = rows.map((row: any) => ({
             id_producto: row.id_producto,
+            precio_unitario: row.precio_unitario,
             cantidad: row.cantidad,
             subtotal: row.subtotal,
         }));
@@ -102,6 +104,7 @@ static async getRefundDetailsColaborador(id_presale: string, userId:string){
             p.estado,
             p.id_cliente,
             dp.id_producto,
+            dp.precio_unitario,
             dp.cantidad,
             dp.subtotal
         FROM preventas p
@@ -125,6 +128,7 @@ static async getRefundDetailsColaborador(id_presale: string, userId:string){
     const { id_preventa, id_cliente, id_colaborador, estado } = rows[0];
     const detalle = rows.map((row: any) => ({
         id_producto: row.id_producto,
+        precio_unitario: row.precio_unitario,
         cantidad: row.cantidad,
         subtotal: row.subtotal,
     }));

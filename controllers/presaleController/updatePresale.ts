@@ -9,12 +9,13 @@ let update_presale = async(req:Request, res:Response): Promise<void> =>{
         const { id_producto, cantidad } = req.body;
 
         const result = await PresaleService.updatePresale(new UpdatePresale( id_preventa, id_producto, cantidad ), userId)
-        if(!result){
-            res.status(404).json({ error: "Preventa no encontrado." });
+        if (!result || result.affectedRows === 0) {  
+            res.status(404).json({ error: "Preventa no encontrada." });
+            return;
         }
-        else{ 
-            res.status(200).json({message:'Preventa actualizado con éxito'}); 
-        }
+
+        res.status(200).json({message:'Preventa actualizado con éxito'});
+        return; 
     } catch (error:any) {
         if(error && error.code == "ER_DUP_ENTRY"){
             res.status(500).json({errorInfo: error.sqlMessage});

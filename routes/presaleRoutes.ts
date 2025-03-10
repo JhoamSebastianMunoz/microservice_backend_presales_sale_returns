@@ -36,14 +36,14 @@ router.get("/getPresaleById/:id_presale", verifyToken, checkRoleAndPermission(["
 router.get("/detailsPresale/:id_preventa", verifyToken, checkRoleAndPermission(["ADMINISTRADOR", "COLABORADOR"]), validatorIdDetallePresale, validatorParamsIdDetallePresale, get_detailsPresale);
 // 
 // PUT: cancelar una preventa
-router.put("/cancelPreventa/:id_presale", verifyToken, checkRoleAndPermission(["COLABORADOR"]), validatorParamsIdPresale, validatorIdPresale, cancel_presale);
+router.put("/cancelPreventa/:id_presale", verifyToken, checkRoleAndPermission(["ADMINISTRADOR", "COLABORADOR"]), validatorParamsIdPresale, validatorIdPresale, cancel_presale);
 
 // PUT: confirmarPreventa
 //router.put("/confirmPresale/:id_presale", confirm_presale);
 router.put("/confirmPresale/:id_presale", verifyToken, checkRoleAndPermission(["ADMINISTRADOR"]), validatorParamsIdPresale, validatorIdPresale, confirm_presale);
 
 // PUT: Actualizar preventa
-router.put("/updatePresale/:id_preventa", verifyToken, checkRoleAndPermission(["COLABORADOR"]), validatorParamsUpdatePresale, validatorUpdatePresale, update_presale);
+router.put("/updatePresale/:id_preventa", verifyToken, checkRoleAndPermission(["ADMINISTRADOR", "COLABORADOR"]), validatorParamsUpdatePresale, validatorUpdatePresale, update_presale);
 
 // DELETE: eliminar preventa
 router.delete("/deletePresale/:id_preventa",  verifyToken, checkRoleAndPermission(["ADMINISTRADOR"]), delete_presale )

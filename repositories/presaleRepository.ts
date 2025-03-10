@@ -30,8 +30,8 @@ class PresaleRepository{
 
             // Paso 2: Insertar los detalles
             const detailSql = `
-                INSERT INTO detalle_preventa (id_preventa, id_producto, cantidad, subtotal) 
-                VALUES (?, ?, ?, ?)`;
+                INSERT INTO detalle_preventa (id_preventa, id_producto, precio_unitario, cantidad, subtotal) 
+                VALUES (?, ?, ?, ?, ?)`;
 
             for (const detail of details) {
                 const productResponse = await axios.get(`${process.env.PRODUCT_SERVICE_URL}${detail.id_producto}`);
@@ -53,7 +53,7 @@ class PresaleRepository{
                 const subtotal = price * detail.cantidad;
 
                 // Insertar el detalle en la base de datos
-                const detailValues = [presaleId, detail.id_producto, detail.cantidad, subtotal];
+                const detailValues = [presaleId, detail.id_producto, price, detail.cantidad, subtotal];
                 await connection.execute(detailSql, detailValues);
                 let cantidad = stock - detail.cantidad
                 console.log('CANTIDADDDDD: ', cantidad);
@@ -180,22 +180,52 @@ class PresaleRepository{
     }
     // para editar un producto en la preventa 
     static async update(updatePresale : UpdatePresale, id_colaborador: number){
-        // Verificar si id_detalle existe
+        // Verificar si id_preventa existe
         if (!updatePresale.id_preventa) {
             throw new Error("id_preventa es undefined o null");
         }
-        const [detalle] = await db.execute<RowDataPacket[]>(`
+        const [detalle]:any = await db.execute(`
                 SELECT 1 FROM detalle_preventa dp 
                 INNER JOIN preventas p ON dp.id_preventa = p.id_preventa  
                 WHERE dp.id_preventa = ? AND p.id_colaborador = ? AND dp.id_producto = ?
             `, [updatePresale.id_preventa, id_colaborador, updatePresale.id_producto]);
+        
         if (detalle.length === 0) {
-            throw new Error('Detalle de preventa no encontrado');
+            return { affectedRows: 0 }; // Indica que no se encontró
         }
 
-        const sql = 'UPDATE detalle_preventa SET id_producto = ?, cantidad = ? WHERE id_preventa = ? and id_producto = ?';
-        const values = [updatePresale.id_producto, updatePresale.cantidad, updatePresale.id_preventa, updatePresale.id_producto];
-        return db.execute(sql,values);
+         // Obtener el precio del producto
+        const productResponse = await axios.get(`${process.env.PRODUCT_SERVICE_URL}${updatePresale.id_producto}`);
+        const productData = productResponse.data[0];
+
+            // Usar el precio unitario almacenado o el precio actual si se cambia el producto
+        const [currentDetail]: any = await db.execute(
+            `SELECT precio_unitario FROM detalle_preventa WHERE id_preventa = ? AND id_producto = ?`,
+            [updatePresale.id_preventa, updatePresale.id_producto]
+        );
+
+        let price;
+        if (currentDetail.length > 0) {
+            // Si es el mismo producto, usar el precio almacenado
+            price = parseFloat(currentDetail[0].precio_unitario);
+        } else {
+            // Si es un producto nuevo, usar el precio actual
+            price = parseFloat(productData.precio);
+        }
+
+        const subtotal = price * updatePresale.cantidad;
+
+        const sql = 'UPDATE detalle_preventa SET cantidad = ?, subtotal = ? WHERE id_preventa = ? AND id_producto = ?';
+        const values = [updatePresale.cantidad, subtotal, updatePresale.id_preventa, updatePresale.id_producto];
+        const [result]: any = await db.execute(sql, values);
+
+        await db.execute(`
+            UPDATE preventas 
+            SET total = (SELECT SUM(subtotal) FROM detalle_preventa WHERE id_preventa = ?) 
+            WHERE id_preventa = ?
+        `, [updatePresale.id_preventa, updatePresale.id_preventa]);
+
+        return result;
     }
 
     // para agregar nuevos productos a la preventa
@@ -204,7 +234,7 @@ class PresaleRepository{
         try {
             await connection.beginTransaction();
              // Paso 1: Insertar los productos
-            const productsSql = `INSERT INTO detalle_preventa (id_preventa, id_producto, cantidad, subtotal) VALUES (?, ?, ?, ?)`;
+            const productsSql = `INSERT INTO detalle_preventa (id_preventa, id_producto, precio_unitario, cantidad, subtotal) VALUES (?, ?, ?, ?, ?)`;
             for (const detail of addProducts) {
                 // Obtener el precio del producto desde el microservicio de productos
                 const productResponse = await axios.get(`${process.env.PRODUCT_SERVICE_URL}${detail.id_producto}`);
@@ -222,7 +252,7 @@ class PresaleRepository{
                 const subtotal = price * detail.cantidad;
 
                 // Insertar el detalle en la base de datos
-                const productsValues = [detail.id_preventa, detail.id_producto, detail.cantidad, subtotal];
+                const productsValues = [detail.id_preventa, detail.id_producto, price, detail.cantidad, subtotal];
                 await connection.execute(productsSql, productsValues);
             }
 
@@ -253,7 +283,8 @@ class PresaleRepository{
                 p.id_colaborador, 
                 p.total, 
                 p.estado, 
-                dp.id_producto, 
+                dp.id_producto,
+                dp.precio_unitario, 
                 dp.cantidad, 
                 dp.subtotal 
             FROM preventas p 
@@ -272,6 +303,7 @@ class PresaleRepository{
         const { id_preventa, id_cliente, id_colaborador, total, estado } = rows[0];
         const detalle = rows.map((row: any) => ({
             id_producto: row.id_producto,
+            precio_unitario: row.precio_unitario,
             cantidad: row.cantidad,
             subtotal: row.subtotal,
         }));
@@ -288,7 +320,8 @@ class PresaleRepository{
                 p.id_colaborador, 
                 p.total, 
                 p.estado, 
-                dp.id_producto, 
+                dp.id_producto,
+                dp.precio_unitario, 
                 dp.cantidad, 
                 dp.subtotal 
             FROM preventas p 
@@ -307,6 +340,7 @@ class PresaleRepository{
         const { id_preventa, id_cliente, id_colaborador, total, estado } = rows[0];
         const detalle = rows.map((row: any) => ({
             id_producto: row.id_producto,
+            precio_unitario: row.precio_unitario,
             cantidad: row.cantidad,
             subtotal: row.subtotal,
         }));

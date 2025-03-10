@@ -33,7 +33,6 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction): Pro
             req.body.role = decoded.role;
             req.body.contraseña = decoded.contraseña;
             req.body.id_usuario = decoded.id_usuario;
-
             next(); 
         } catch (error) {
             res.status(403).json({
