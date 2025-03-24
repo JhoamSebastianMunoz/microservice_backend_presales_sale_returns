@@ -27,3 +27,4 @@ CREATE TABLE detalle_preventa(
 );
 
 SELECT * FROM detalle_preventa;
+
