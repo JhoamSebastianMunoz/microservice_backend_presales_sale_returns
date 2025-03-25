@@ -21,7 +21,7 @@ import delete_presale from "../controllers/presaleController/deletePresale";
 const router = express.Router();
 
 // POST: Crear una preventa
-router.post("/registerPresale", verifyToken, checkRoleAndPermission(["COLABORADOR"]), validatorParams, validator, register_presale);
+router.post("/registerPresale", verifyToken, checkRoleAndPermission(["ADMINISTRADOR", "COLABORADOR"]), validatorParams, validator, register_presale);
 
 // POST: para agregar nuevos productos a la preventa
 router.post("/addProductsPresale/:id_presale", verifyToken, checkRoleAndPermission(["COLABORADOR"]), validatorParamsIdPresale, validatorIdPresale, addProductsPresale)
