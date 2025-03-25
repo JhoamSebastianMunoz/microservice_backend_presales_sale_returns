@@ -18,6 +18,8 @@ const app = express();
 
 const allowedOrigins = [
   'http://localhost:10000',
+  'http://localhost:5173',  // Frontend en desarrollo
+  'https://ambitious-sky-070d67b0f.4.azurestaticapps.net',  // Frontend deployado
   'https://backendpresalessalereturns-g2cghudwf2emhnf4.eastus-01.azurewebsites.net'
 ];
 
