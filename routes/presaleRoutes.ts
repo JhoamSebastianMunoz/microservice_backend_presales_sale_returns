@@ -40,13 +40,13 @@ router.put("/cancelPreventa/:id_presale", verifyToken, checkRoleAndPermission(["
 
 // PUT: confirmarPreventa
 //router.put("/confirmPresale/:id_presale", confirm_presale);
-router.put("/confirmPresale/:id_presale", verifyToken, checkRoleAndPermission(["ADMINISTRADOR","COLABORADOR"]), validatorParamsIdPresale, validatorIdPresale, confirm_presale);
+router.put("/confirmPresale/:id_presale", verifyToken, checkRoleAndPermission(["ADMINISTRADOR", "COLABORADOR"]), validatorParamsIdPresale, validatorIdPresale, confirm_presale);
 
 // PUT: Actualizar preventa
 router.put("/updatePresale/:id_preventa", verifyToken, checkRoleAndPermission(["ADMINISTRADOR", "COLABORADOR"]), validatorParamsUpdatePresale, validatorUpdatePresale, update_presale);
 
 // DELETE: eliminar preventa
-router.delete("/deletePresale/:id_preventa",  verifyToken, checkRoleAndPermission(["ADMINISTRADOR","COLABORADOR"]), delete_presale )
+router.delete("/deletePresale/:id_preventa",  verifyToken, checkRoleAndPermission(["ADMINISTRADOR", "COLABORADOR"]), delete_presale )
 
 
 export default router;
