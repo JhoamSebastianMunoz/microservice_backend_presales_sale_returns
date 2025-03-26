@@ -11,13 +11,14 @@ import presaleRoutes from './routes/presaleRoutes';
 import salesRoutes from './routes/salesRoutes';
 import refundRoutes from './routes/refundRoutes';
 import invoiceDownload from './routes/invoiceDownloadRoutes';
+import reportsRoutes from './routes/reportsRoutes';
 
 dotenv.config();
 
 const app = express();
 
 const allowedOrigins = [
-  'http://localhost:10000',
+  'http://localhost:10103',
   'http://localhost:5173',  // Frontend en desarrollo
   'https://ambitious-sky-070d67b0f.4.azurestaticapps.net',  // Frontend deployado
   'https://backendpresalessalereturns-g2cghudwf2emhnf4.eastus-01.azurewebsites.net'
@@ -66,6 +67,7 @@ app.use('/', presaleRoutes);
 app.use('/', salesRoutes);
 app.use('/', refundRoutes);
 app.use('/', invoiceDownload);
+app.use('/', reportsRoutes)
 
 // Error handling
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {

@@ -9,6 +9,7 @@ import GetPresale from "../Dto/DtoPresale/getPresaleDto";
 import Presale from "../Dto/DtoPresale/presaleDto";
 import UpdatePresale from "../Dto/DtoPresale/updatePresaleDto";
 import dotenv from 'dotenv';
+import VentaDetalleDTO from "../Dto/DtoReports/VentaDetalleDto";
 
 dotenv.config();
 
@@ -347,6 +348,22 @@ class PresaleRepository{
     
         return { id_preventa, id_cliente, id_colaborador, total, estado, detalle };
     }
+
+    static async queryDetallesVentasConfirmadas() {
+        const sql = `
+          SELECT 
+            dp.id_producto, 
+            dp.cantidad, 
+            dp.subtotal
+          FROM preventas p
+          JOIN detalle_preventa dp ON p.id_preventa = dp.id_preventa
+          WHERE p.estado = 'Confirmada' 
+          AND dp.estado = 'vendido'
+        `;
+        
+        const [rows] = await db.query<RowDataPacket[]>(sql);
+        return rows as VentaDetalleDTO[] ; 
+      }
     
 }
 
