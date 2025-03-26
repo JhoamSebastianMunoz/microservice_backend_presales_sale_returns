@@ -1544,3 +1544,483 @@ paths:
                   details:
                     type: string
                     example: "Unexpected error while fetching return data"
+# DescargaFactura
+  /invoiceDownload/{id_preventa}:
+    post:
+      security:
+        - BearerAuth: []
+      tags:
+        - DescargaFactura
+      summary: Descargar factura PDF
+      description: Genera y descarga un archivo PDF con la factura de una preventa específica.
+      parameters:
+        - name: id_preventa
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la preventa para la cual se generará la factura.
+          example: 4
+      responses:
+        "200":
+          description: Factura PDF generada y descargada exitosamente.
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        "401":
+          description: Token inválido o expirado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "token inválido o expirado"
+        "403":
+          description: No autorizado, token JWT inválido o expirado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "No autorizado"
+                  error:
+                    type: string
+                    example: "jwt expired"
+        "404":
+          description: Preventa no encontrada.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Preventa no encontrada"
+        "500":
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Error en el servidor"
+
+# Reportes
+  /ventas-por-colaborador:
+    get:
+      security:
+        - BearerAuth: []
+      tags:
+        - Reportes
+      summary: Obtener reporte de ventas por colaborador
+      description: Genera un reporte de ventas realizadas por cada colaborador en un rango de fechas específico.
+      parameters:
+        - name: fechaInicio
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          description: Fecha de inicio del reporte en formato YYYY-MM-DD.
+          example: "2025-01-01"
+        - name: fechaFin
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          description: Fecha de fin del reporte en formato YYYY-MM-DD.
+          example: "2025-03-31"
+      responses:
+        "200":
+          description: Reporte de ventas por colaborador generado exitosamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id_colaborador:
+                      type: integer
+                      description: ID del colaborador.
+                      example: 2
+                    nombre_colaborador:
+                      type: string
+                      description: Nombre completo del colaborador.
+                      example: "Sebastian Velasco"
+                    total_ventas:
+                      type: number
+                      description: Monto total de ventas realizadas por el colaborador en el período.
+                      example: 1587.45
+                    cantidad_ventas:
+                      type: integer
+                      description: Número de ventas realizadas por el colaborador en el período.
+                      example: 5
+        "400":
+          description: Parámetros de consulta faltantes o inválidos.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Debe proporcionar fechaInicio y fechaFin en formato YYYY-MM-DD."
+        "401":
+          description: Token inválido o expirado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "token inválido o expirado"
+        "403":
+          description: No autorizado para acceder a este recurso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "No autorizado"
+                  error:
+                    type: string
+                    example: "jwt expired"
+        "500":
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Error al generar reporte de ventas por colaborador"
+                  details:
+                    type: string
+                    example: "Error al consultar la base de datos"
+
+  /top-clientes:
+    get:
+      security:
+        - BearerAuth: []
+      tags:
+        - Reportes
+      summary: Obtener clientes con mayor volumen de compras
+      description: Genera un reporte de los clientes con más compras en un período específico.
+      parameters:
+        - name: fechaInicio
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          description: Fecha de inicio del reporte en formato YYYY-MM-DD.
+          example: "2025-01-01"
+        - name: fechaFin
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          description: Fecha de fin del reporte en formato YYYY-MM-DD.
+          example: "2025-03-31"
+      responses:
+        "200":
+          description: Reporte de top clientes generado exitosamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id_cliente:
+                      type: integer
+                      description: ID del cliente.
+                      example: 3
+                    nombre_cliente:
+                      type: string
+                      description: Nombre completo del cliente.
+                      example: "María Rodríguez López"
+                    total_compras:
+                      type: number
+                      description: Monto total de compras realizadas por el cliente en el período.
+                      example: 2389.75
+                    cantidad_compras:
+                      type: integer
+                      description: Número de compras realizadas por el cliente en el período.
+                      example: 7
+                    razon_social:
+                      type: string
+                      nullable: true
+                      description: Razón social del cliente (si aplica).
+                      example: "Comercial Rodríguez S.A.S"
+        "400":
+          description: Parámetros de consulta faltantes o inválidos.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Debe proporcionar fechaInicio y fechaFin en formato YYYY-MM-DD."
+        "401":
+          description: Token inválido o expirado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "token inválido o expirado"
+        "403":
+          description: No autorizado para acceder a este recurso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "No autorizado"
+                  error:
+                    type: string
+                    example: "jwt expired"
+        "404":
+          description: No se encontraron ventas en el período especificado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "No se encontraron ventas en el período especificado"
+        "500":
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Error al generar reporte de top clientes"
+                  details:
+                    type: string
+                    example: "Error al consultar la base de datos"
+
+  /top-productos-vendidos:
+    get:
+      security:
+        - BearerAuth: []
+      tags:
+        - Reportes
+      summary: Obtener productos más vendidos
+      description: Genera un reporte de los productos con mayor volumen de ventas en un período específico.
+      parameters:
+        - name: fechaInicio
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: Fecha de inicio del reporte en formato YYYY-MM-DD. Por defecto es '2025-01-01'.
+          example: "2025-01-01"
+        - name: fechaFin
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: Fecha de fin del reporte en formato YYYY-MM-DD. Por defecto es la fecha actual.
+          example: "2025-03-31"
+        - name: limite
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+          description: Número máximo de productos a retornar. Por defecto es 10.
+          example: 10
+        - name: orden
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+          description: Orden de los resultados por cantidad vendida. Por defecto es 'desc' (descendente).
+          example: "desc"
+      responses:
+        "200":
+          description: Reporte de productos más vendidos generado exitosamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id_producto:
+                      type: integer
+                      description: ID del producto.
+                      example: 5
+                    nombre_producto:
+                      type: string
+                      description: Nombre del producto.
+                      example: "Laptop Gamer"
+                    cantidad_vendida:
+                      type: integer
+                      description: Cantidad total vendida del producto en el período.
+                      example: 42
+                    monto_total:
+                      type: number
+                      description: Monto total de ventas del producto en el período.
+                      example: 38500.00
+        "401":
+          description: Token inválido o expirado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "token inválido o expirado"
+        "403":
+          description: No autorizado para acceder a este recurso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "No autorizado"
+                  error:
+                    type: string
+                    example: "jwt expired"
+        "500":
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Error al generar reporte de top productos"
+                  details:
+                    type: string
+                    example: "Error al consultar datos de productos"
+
+  /top-productos-menos-vendidos:
+    get:
+      security:
+        - BearerAuth: []
+      tags:
+        - Reportes
+      summary: Obtener productos menos vendidos
+      description: Genera un reporte de los productos con menor volumen de ventas en un período específico. Usa el mismo controlador que top-productos-vendidos pero con orden ascendente por defecto.
+      parameters:
+        - name: fechaInicio
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: Fecha de inicio del reporte en formato YYYY-MM-DD. Por defecto es '2025-01-01'.
+          example: "2025-01-01"
+        - name: fechaFin
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: Fecha de fin del reporte en formato YYYY-MM-DD. Por defecto es la fecha actual.
+          example: "2025-03-31"
+        - name: limite
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+          description: Número máximo de productos a retornar. Por defecto es 10.
+          example: 10
+      responses:
+        "200":
+          description: Reporte de productos menos vendidos generado exitosamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id_producto:
+                      type: integer
+                      description: ID del producto.
+                      example: 8
+                    nombre_producto:
+                      type: string
+                      description: Nombre del producto.
+                      example: "Teclado Mecánico"
+                    cantidad_vendida:
+                      type: integer
+                      description: Cantidad total vendida del producto en el período.
+                      example: 3
+                    monto_total:
+                      type: number
+                      description: Monto total de ventas del producto en el período.
+                      example: 240.00
+        "401":
+          description: Token inválido o expirado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "token inválido o expirado"
+        "403":
+          description: No autorizado para acceder a este recurso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "No autorizado"
+                  error:
+                    type: string
+                    example: "jwt expired"
+        "500":
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Error al generar reporte de productos menos vendidos"
+                  details:
+                    type: string
+                    example: "Error al consultar datos de productos"

@@ -18,8 +18,9 @@ dotenv.config();
 const app = express();
 
 const allowedOrigins = [
-  'http://localhost:1000',
-  'http://localhost:3000',
+  'http://localhost:10103',
+  'http://localhost:5173',  // Frontend en desarrollo
+  'https://ambitious-sky-070d67b0f.4.azurestaticapps.net',  // Frontend deployado
   'https://backendpresalessalereturns-g2cghudwf2emhnf4.eastus-01.azurewebsites.net'
 ];
 
