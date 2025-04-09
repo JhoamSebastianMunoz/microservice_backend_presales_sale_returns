@@ -486,6 +486,10 @@ paths:
                     items:
                       type: object
                       properties:
+                        idProducto:
+                          type: numbre
+                          description: Id del producto.
+                          example: 4
                         nombre:
                           type: string
                           description: Nombre del producto.

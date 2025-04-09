@@ -66,6 +66,7 @@ let get_detailsPresale = async (req: Request, res: Response): Promise<void> => {
                 // console.log('PRODUCTOS: result.DETALLE.MAP: ', producto);
                 
                 return {
+                    idProducto: d.id_producto,
                     nombre: producto?.nombre_producto || 'Producto no encontrado',
                     precio: d.precio_unitario || producto?.precio || 0, 
                     cantidad: d.cantidad,
