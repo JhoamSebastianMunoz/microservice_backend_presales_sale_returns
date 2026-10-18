@@ -11,6 +11,7 @@
 [![Express](https://img.shields.io/badge/Express-4.x-000000?logo=express&logoColor=white)](https://expressjs.com/)
 [![MySQL](https://img.shields.io/badge/MySQL-8.x-4479A1?logo=mysql&logoColor=white)](https://www.mysql.com/)
 [![OpenAPI](https://img.shields.io/badge/OpenAPI-3.0-6BA539?logo=openapiinitiative&logoColor=white)](./swagger.yaml)
+[![GitHub](https://img.shields.io/badge/GitHub-tatsoft--sales--service-181717?logo=github&logoColor=white)](https://github.com/JhoamSebastianMunoz/tatsoft-sales-service)
 
 </div>
 
@@ -109,6 +110,10 @@ PRODUCT_SERVICE_URL_ACTUALIZAR_CANTIDAD=http://localhost:3000/products/stock/
 ## Instalación y ejecución
 
 ```bash
+# Clonar el repositorio
+git clone https://github.com/JhoamSebastianMunoz/tatsoft-sales-service.git
+cd tatsoft-sales-service
+
 # Instalar dependencias
 npm install
 
